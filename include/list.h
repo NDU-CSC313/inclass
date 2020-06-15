@@ -6,17 +6,17 @@ public:
     Node *prev;
     Node *next;
 
-    Node( const Object & d=Object (), Node *p=NULL,
-         Node *n=NULL)
+    Node( const Object & d=Object (), Node *p=nullptr,
+         Node *n=nullptr)
     :data(d),prev(p),next(n){}
 };
 
 
 template  <typename Object>
-class List{
+class list{
 
 private:
-int   theSize;
+int   _size;
   Node<Object> *head;
   Node<Object> *tail;
   void init();
@@ -39,13 +39,13 @@ public:
       //since end and begin return a temp value
       //then != should take a constant argument
       bool operator!=(const iterator &rhs) ;
-      friend class List<Object>;
+      friend class list<Object>;
   };
    
-    List();
-    List(const List &rhs);
-    ~List();
-    List & operator=(const List &);
+    list();
+    list(const list &rhs);
+    ~list();
+    list & operator=(const list &);
     iterator begin() const;//it is used by constant lists, for example in copy constructor
     iterator end() const;// same as above
     int size()  ;
@@ -65,37 +65,37 @@ public:
 //implementation
 //First the iterator class
 template<typename Object>
-Object & List<Object>::iterator::operator*(){
+Object & list<Object>::iterator::operator*(){
     return current->data;
 }
 
 template<typename Object>
-typename List<Object>::iterator & List<Object>::iterator::operator++(){
+typename list<Object>::iterator & list<Object>::iterator::operator++(){
     current=current->next;
     return *this;
 }
 template <typename Object>
-typename List<Object>::iterator & List<Object>::iterator::operator++(int in){
+typename list<Object>::iterator & list<Object>::iterator::operator++(int in){
     current=current->next;
     return *this;
 }
 template<typename Object>
-typename List<Object>::iterator & List<Object>::iterator::operator--(){
+typename list<Object>::iterator & list<Object>::iterator::operator--(){
     current=current->prev;
     return *this;
 }
 template<typename Object>
-typename List<Object>::iterator & List<Object>::iterator::operator--(int in){
+typename list<Object>::iterator & list<Object>::iterator::operator--(int in){
     current=current->prev;
     return *this;
 }
 template<typename Object>
-bool List<Object>::iterator::operator==(const typename List<Object>::iterator & rhs)  {
+bool list<Object>::iterator::operator==(const typename list<Object>::iterator & rhs)  {
     return current==rhs.current;
 }
 
 template<typename Object>
-bool List<Object>::iterator::operator!=(const typename List<Object>::iterator & rhs)  {
+bool list<Object>::iterator::operator!=(const typename list<Object>::iterator & rhs)  {
     return (current!=rhs.current);
     
 }
@@ -103,24 +103,24 @@ bool List<Object>::iterator::operator!=(const typename List<Object>::iterator & 
 //the list class
 
 template<typename Object>
-void List<Object>::init()
+void list<Object>::init()
 {
-    theSize=0;
-    head=new Node<Object>;
-    tail=new Node<Object>;
+    _size=0;
+    head = new Node<Object>{};
+    tail = new Node<Object>{};
     head->next=tail;
-    head->prev=NULL;
+    head->prev=nullptr;
     tail->prev=head;
-    tail->next=NULL;
+    tail->next=nullptr;
 }
 
 
 template<typename Object>
-List<Object>::List()
+list<Object>::list()
 { init(); }
 
 template<typename Object>
-List<Object>::~List()
+list<Object>::~list()
 {
     clear();
     delete head;
@@ -130,65 +130,65 @@ List<Object>::~List()
 
 
 template<typename Object>
-typename List<Object>::iterator List<Object>::begin() const
+typename list<Object>::iterator list<Object>::begin() const
 { return iterator(head->next);}
 
 template<typename Object>
-typename List<Object>::iterator List<Object>::end() const
+typename list<Object>::iterator list<Object>::end() const
 { return iterator(tail);}
 
 template<typename Object>
-int List<Object>::size()
-{ return theSize;}
+int list<Object>::size()
+{ return _size;}
 
 template<typename Object>
-bool List<Object>::empty()
+bool list<Object>::empty()
 {return size()==0;}
 
 template <typename Object>
-void List<Object>::clear(){
+void list<Object>::clear(){
     while(!empty())
         erase(begin());
 }
 template<typename Object>
-void List<Object>::push_front(const Object & x){
+void list<Object>::push_front(const Object & x){
     insert( begin( ), x );
 }
 template<typename Object>
-void List<Object>::push_back(const Object & x){
+void list<Object>::push_back(const Object & x){
     insert( end( ), x );
 }
 
 template<typename Object>
-void List<Object>::pop_front(){
+void list<Object>::pop_front(){
     erase( begin() );
 }
 template<typename Object>
-void List<Object>::pop_back(){
+void list<Object>::pop_back(){
     erase( --end() );
 }
 template<typename Object>
-List<Object>::List(const List<Object> &rhs)
+list<Object>::list(const list<Object> &rhs)
 {  init();
-    for( List<Object>::iterator itr=rhs.begin();itr!=rhs.end();++itr)
+    for( list<Object>::iterator itr=rhs.begin();itr!=rhs.end();++itr)
         push_back(*itr);
 }
 
 template<typename Object>
-List<Object> & List<Object>::operator=(const List<Object> &rhs)
+list<Object> & list<Object>::operator=(const list<Object> &rhs)
 {
     if(this==&rhs)
         return *this;
     clear();
-    for(typename List<Object>::iterator itr=rhs.begin();itr!=rhs.end();++itr)
+    for(typename list<Object>::iterator itr=rhs.begin();itr!=rhs.end();++itr)
 	       push_back(*itr);
     return *this;
 }
 template<typename Object>
-   typename List<Object>::iterator List<Object>::insert( typename List<Object>::iterator itr,const Object & x)
+   typename list<Object>::iterator list<Object>::insert( typename list<Object>::iterator itr,const Object & x)
 {
     Node<Object> *p=itr.current;
-    theSize++;
+    _size++;
     Node<Object> *newNode=new Node<Object>(x,p->prev,p);
     p->prev->next=newNode;
     p->prev=newNode;
@@ -196,28 +196,28 @@ template<typename Object>
 }
 
 template<typename Object>
- typename List<Object>::iterator List<Object>::erase( typename List<Object>::iterator itr){
+ typename list<Object>::iterator list<Object>::erase( typename list<Object>::iterator itr){
     Node<Object> *p=itr.current;
     iterator ret(p->next);
     p->prev->next=p->next;
     p->next->prev=p->prev;
     delete p;
-    theSize--;
+    _size--;
     return ret;
 
 }
 
 template<typename Object>
-Node<Object> * List<Object>::rreverse(Node<Object> *t){
-    if(t==NULL) return NULL;
-    if(t->next==NULL) return t;// a list with one element is its OWN reverse
+Node<Object> * list<Object>::rreverse(Node<Object> *t){
+    if(t==nullptr) return nullptr;
+    if(t->next==nullptr) return t;// a list with one element is its OWN reverse
     // second represents the "tail" list
     Node<Object> *second=t->next;
-    t->next=NULL;
+    t->next=nullptr;
     //  rsecond represents the reverse of "tail"
     Node<Object> *rsecond=rreverse(second);
     //concatenate or "glue" the two lists together
-    rsecond->prev=NULL;
+    rsecond->prev=nullptr;
     second->next=t;
     t->prev=second;
     return rsecond;
@@ -225,12 +225,12 @@ Node<Object> * List<Object>::rreverse(Node<Object> *t){
 
 
 template<typename Object>
-void List<Object>::reverse(){
+void list<Object>::reverse(){
     Node<Object> *current;
     Node<Object> *t;
     current=head;
     
-    while(current!=NULL){
+    while(current!=nullptr){
         t=current->prev;
         current->prev=current->next;
         current->next=t;
