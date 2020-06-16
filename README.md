@@ -9,3 +9,4 @@ If you are using Xcode on Mac then type
 
 > cmake -G Xcode ..
 
+good luck
