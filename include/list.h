@@ -127,8 +127,11 @@ list<Object>::~list()
     delete tail;
 }
 
-
-
+// head->XXX1->2->tail
+//list<int> l;
+//l.push_back(1);l.push_back(2);
+// for(auto itr=l.begin();itr!=l.end();++itr)
+ //     std::cout<<*itr;
 template<typename Object>
 typename list<Object>::iterator list<Object>::begin() const
 { return iterator(head->next);}
@@ -185,28 +188,30 @@ list<Object> & list<Object>::operator=(const list<Object> &rhs)
     return *this;
 }
 template<typename Object>
-   typename list<Object>::iterator list<Object>::insert( typename list<Object>::iterator itr,const Object & x)
+   typename list<Object>::iterator list<Object>::insert( typename list<Object>::iterator itr,
+       const Object & x)
 {
-    Node<Object> *p=itr.current;
+    Node<Object> *q=itr.current;
     _size++;
-    Node<Object> *newNode=new Node<Object>(x,p->prev,p);
-    p->prev->next=newNode;
-    p->prev=newNode;
+    //Node<Object *t=new Node<Object>(x,p,q)
+    Node<Object> *newNode=new Node<Object>(x,q->prev,q);
+    q->prev->next=newNode;
+    q->prev=newNode;
     return iterator(newNode);
 }
 
 template<typename Object>
  typename list<Object>::iterator list<Object>::erase( typename list<Object>::iterator itr){
-    Node<Object> *p=itr.current;
-    iterator ret(p->next);
-    p->prev->next=p->next;
-    p->next->prev=p->prev;
-    delete p;
+    Node<Object> *t=itr.current;
+    iterator ret(t->next);
+    t->prev->next=t->next;// p---t---q;
+    t->next->prev=t->prev;
+    delete t;
     _size--;
     return ret;
 
 }
-
+ //extra
 template<typename Object>
 Node<Object> * list<Object>::rreverse(Node<Object> *t){
     if(t==nullptr) return nullptr;

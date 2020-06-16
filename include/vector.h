@@ -65,6 +65,18 @@ public:
             _data[i] = rhs._data[i];
 
     }
+    void operator=(const vector& rhs) {
+        _size = rhs._size;
+        _capacity = rhs._capacity;
+        delete[] _data;
+        _data = new T[_capacity];
+        for (int i = 0; i < _size; ++i)
+            _data[i] = rhs._data[i];
+
+       // return *this;
+
+
+    }
     
     ~vector() {
         if (_data != nullptr)

@@ -52,7 +52,7 @@ public:
 
 
 int main() {
-    {
+   /* {
         std::list<int> mylist{ 1,2,3,4,5 };
         auto itr = mylist.begin();
         std::advance(itr, 2);
@@ -63,7 +63,7 @@ int main() {
         for (auto itr = mylist.begin(); itr != mylist.end(); ++itr)
             std::cout << *itr << ",";
         std::cout << std::endl;
-    }
+    }*/
      /*{
         std::list<TestClass<0>> a;
         std::vector<TestClass<0>> b;

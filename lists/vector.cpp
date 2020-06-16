@@ -492,13 +492,13 @@ int main()
     //        std::cout << *itr<<",";
     //}
 
-    {
-        ::vector<TestClass<0>> v;
-        v.push_back(TestClass<0>(1, 2));
-        for (auto itr = v.begin(); itr != v.end(); itr++)
-            std::cout << itr->x() << std::endl;
-       // v.begin();
-    }
+    //{
+    //    ::vector<TestClass<0>> v;
+    //    v.push_back(TestClass<0>(1, 2));
+    //    for (auto itr = v.begin(); itr != v.end(); itr++)
+    //        std::cout << itr->x() << std::endl;
+    //   // v.begin();
+    //}
    /* {
     std::vector<TestClass<0>> u;
     u.push_back(TestClass<0>(1, 2)); u.push_back(TestClass<0>(3, 4));
@@ -510,4 +510,20 @@ int main()
 
 
     }*/
+    {
+    
+        ::vector<int> u,v;
+        u.push_back(1); u.push_back(2); u.push_back(3);
+        v = u;
+        ::vector<int> w = v;
+        u[0] = 11;
+        for (auto& x : v)
+            std::cout << x << ",";
+        std::cout << std::endl;
+        for (auto& x : w)
+            std::cout << x << ",";
+        std::cout << std::endl;
+        std::cout << "done\n";
+
+    }
 }
