@@ -65,7 +65,7 @@ public:
             _data[i] = rhs._data[i];
 
     }
-    void operator=(const vector& rhs) {
+    vector& operator=(const vector& rhs) {
         _size = rhs._size;
         _capacity = rhs._capacity;
         delete[] _data;
@@ -73,7 +73,7 @@ public:
         for (int i = 0; i < _size; ++i)
             _data[i] = rhs._data[i];
 
-       // return *this;
+       return *this;
 
 
     }

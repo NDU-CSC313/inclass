@@ -19,7 +19,7 @@ void BST::print(){
 }
 
 void BST::print(Node *n,int level){
-    if(n==NULL)return;
+    if(n==nullptr)return;
     
     for(int i=0;i!=level;i++)
         std::cout<<" ";
@@ -35,8 +35,8 @@ void BST::insert(int x) {
 }
 
 void BST::insert(int x,Node * &t) {
-    if(t==NULL){
-        t=new Node(x,NULL,NULL);
+    if(t==nullptr){
+        t=new Node(x,nullptr,nullptr);
     }
     else if ( x< t->data ){
         insert(x,t->left);
@@ -48,8 +48,8 @@ void BST::insert(int x,Node * &t) {
 }
 
 
-void BST::remove(int x){
-    remove(x,root); 
+void BST::erase(int x){
+    erase(x,root); 
 }
 
 int BST::findMin(){
@@ -57,15 +57,15 @@ int BST::findMin(){
 }
 
 BST::Node * BST::findMin(Node *t){
-    if(t==NULL)return NULL;
-    if(t->left==NULL)return t;
+    if(t==nullptr)return nullptr;
+    if(t->left==nullptr)return t;
     return findMin(t->left);
 }
 
 
  BST::Node * BST::findMax(Node *t){
-    if(t==NULL)return NULL;
-    if(t->right==NULL)return t;
+    if(t==nullptr)return nullptr;
+    if(t->right==nullptr)return t;
     return findMax(t->right);
 }
 
@@ -73,7 +73,7 @@ BST::Node * BST::findMin(Node *t){
 
 
 void BST::printPreorder(Node *t){
-    if(t==NULL)return;
+    if(t==nullptr)return;
     std::cout<<t->data<<",";
     printPreorder(t->left);
     printPreorder(t->right);    
@@ -81,7 +81,7 @@ void BST::printPreorder(Node *t){
 
 
 void BST::printPostorder(Node *t){
-    if(t==NULL)return;
+    if(t==nullptr)return;
     
     printPostorder(t->left);
     printPostorder(t->right);    
@@ -90,7 +90,7 @@ void BST::printPostorder(Node *t){
 
 
 void BST::printInorder(Node *t){
-    if(t==NULL)return;
+    if(t==nullptr)return;
     printInorder(t->left);
     std::cout<<t->data<<",";
     printInorder(t->right);    
@@ -103,7 +103,7 @@ int BST::height(){
 
 
 int BST::height(BST::Node *t){
-    if (t==NULL){std::cout<<"NULL"<<std::endl; return -1;}
+    if (t==nullptr){std::cout<<"nullptr"<<std::endl; return -1;}
     else{
         int hl=height(t->left);
         int hr=height(t->right);
@@ -119,7 +119,7 @@ int BST::numNodes(){
 
 
 int BST::numNodes(Node *t){
-    if(t==NULL)return 0;
+    if(t==nullptr)return 0;
     else
         return 1+numNodes(t->left)+numNodes(t->right);
 }
@@ -131,8 +131,8 @@ int BST::numLeaves(){
 
 
 int BST::numLeaves(BST::Node *t){
-    if(t==NULL)return 0;
-    else if (t->left==NULL && t->right==NULL)
+    if(t==nullptr)return 0;
+    else if (t->left==nullptr && t->right==nullptr)
         return 1;
     else
         return numLeaves(t->left)+numLeaves(t->right);
@@ -151,14 +151,14 @@ std::string BST::printLevel(){
         Node *t=q.front();
         Node *left=t->left;
         Node *right=t->right;
-        if(left!=NULL){
+        if(left!=nullptr){
             q.push(left);
             ss<<left->data<<' ';
         }
         else{
             ss<<-1<<' ';
         }
-        if(right!=NULL){
+        if(right!=nullptr){
             q.push(right);
             ss<<right->data<<' ';
         }
@@ -178,7 +178,7 @@ void BST::readLevel(){
     std::queue<BST::Node *> q;
     input>>x;
     BST::Node *tmp;
-    tmp=new Node(x,NULL,NULL);
+    tmp=new Node(x,nullptr,nullptr);
     root=tmp;
     q.push(root);
 
@@ -187,15 +187,15 @@ void BST::readLevel(){
         // so the scoping BST:: is not
         //strictly necessary
         Node *t=q.front();
-        BST::Node *left=NULL;
-        BST::Node *right=NULL;
+        BST::Node *left=nullptr;
+        BST::Node *right=nullptr;
         input>>x>>y;
         if(x!=-1){
-          left=new Node(x,NULL,NULL);
+          left=new Node(x,nullptr,nullptr);
             q.push(left);
         }
         if(y!=-1){
-          right=new Node(y,NULL,NULL);
+          right=new Node(y,nullptr,nullptr);
           q.push(right);
         }
         t->left=left;
@@ -206,19 +206,19 @@ void BST::readLevel(){
 }
 
 
-void BST::remove(int x,Node * &t){
+void BST::erase(int x,Node * &t){
     
-    if(t==NULL) return;
-    if(x<t->data)remove(x,t->left);
-    else if (x> t->data) remove(x,t->right);
+    if(t==nullptr) return;
+    if(x<t->data)erase(x,t->left);
+    else if (x> t->data) erase(x,t->right);
     /* found the node */
-    else if(t->left!=NULL && t->right!=NULL){
+    else if(t->left!=nullptr && t->right!=nullptr){
         t->data=BST::findMin(t->right)->data;
-        remove(t->data,t->right);
+        erase(t->data,t->right);
     }
     else {
         Node *oldNode=t;
-        t=(t->left!=NULL)?t->left:t->right;
+        t=(t->left!=nullptr)?t->left:t->right;
         delete oldNode;
     }
 }
@@ -226,8 +226,8 @@ void BST::remove(int x,Node * &t){
 void BST::add(Node * t,int h){
     if(h==0)return;
     
-    t->left=new Node(h-1,NULL,NULL);
-    t->right=new Node(h-1,NULL,NULL);
+    t->left=new Node(h-1,nullptr,nullptr);
+    t->right=new Node(h-1,nullptr,nullptr);
     add(t->left,h-1);
     add(t->right,h-1);
     

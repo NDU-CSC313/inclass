@@ -512,9 +512,9 @@ int main()
     }*/
     {
     
-        ::vector<int> u,v;
+        ::vector<int> u,v,t;
         u.push_back(1); u.push_back(2); u.push_back(3);
-        v = u;
+        t=v = u;
         ::vector<int> w = v;
         u[0] = 11;
         for (auto& x : v)
