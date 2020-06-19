@@ -531,11 +531,23 @@ int main()
         ::vector<TestClass<0>> v;
         v.push_back(TestClass<0>(3, 4));
         v.emplace_back(1, 2);
-        ::vector<TestClass<0>>::iterator itr;
+        v.push_back(TestClass<0>(5, 6));
+        v.emplace_back(7, 8);
+        v.emplace_back(9, 10);
+        v.emplace_back(11, 12);
+        v.emplace_back(13, 14);
+        std::cout << "----------\n";
+        /*std::vector<TestClass<0>> u;
+        u.push_back(TestClass<0>(3, 4));
+        u.emplace_back(1, 2);
+        u.push_back(TestClass<0>(5, 6));
+        u.emplace_back(7, 8);
+        std::cout << "\n-------------\n";*/
+        /*::vector<TestClass<0>>::iterator itr;
         for (itr = v.begin(); itr != v.end(); ++itr)
-            std::cout << itr->x() <<","<<itr->y()<< std::endl;
-        for (auto&&  e : v) {
-            std::cout << e.x() << std::endl;
-        }
+            std::cout << itr->x() <<","<<itr->y()<< std::endl;*/
+       /* for (auto&&  e : v) {
+            std::cout << e.x() << ","<<e.y()<<std::endl;
+        }*/
     }
 }

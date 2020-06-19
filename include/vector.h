@@ -122,6 +122,7 @@ public:
         for (int i = 0; i < _size; ++i) {
             _data[i] = std::move(old[i]);
         }
+       // std::memcpy(_data, old, _size * sizeof(value_type));
         //TODO: should we call the dtor of the elemets first?
         delete old;
     }
@@ -182,7 +183,7 @@ public:
         _x = rhs._x;
         _y = rhs._y;
     };
-    TestClass(TestClass&& rhs) {
+    TestClass(TestClass&& rhs) noexcept {
         if (!nodebug) {
             std::cout << "move ctor\n";
         }
@@ -199,7 +200,7 @@ public:
         _y = rhs._y;
         return *this;
     }
-    TestClass& operator=(TestClass&& rhs) {
+    TestClass& operator=(TestClass&& rhs) noexcept  {
         if (!nodebug) {
             std::cout << "move \n";
         }
