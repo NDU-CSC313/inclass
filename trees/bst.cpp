@@ -171,40 +171,6 @@ std::string BST::printLevel(){
     return ss.str();
 }
 
-void BST::readLevel(){
-    std::fstream input;
-    input.open("/Users/apple/tmp/input");
-    int x,y;
-    std::queue<BST::Node *> q;
-    input>>x;
-    BST::Node *tmp;
-    tmp=new Node(x,nullptr,nullptr);
-    root=tmp;
-    q.push(root);
-
-    while(!q.empty()){
-        //the scope is already BST
-        // so the scoping BST:: is not
-        //strictly necessary
-        Node *t=q.front();
-        BST::Node *left=nullptr;
-        BST::Node *right=nullptr;
-        input>>x>>y;
-        if(x!=-1){
-          left=new Node(x,nullptr,nullptr);
-            q.push(left);
-        }
-        if(y!=-1){
-          right=new Node(y,nullptr,nullptr);
-          q.push(right);
-        }
-        t->left=left;
-        t->right=right;
-        q.pop();
-    }
-
-}
-
 
 void BST::erase(int x,Node * &t){
     
@@ -222,19 +188,3 @@ void BST::erase(int x,Node * &t){
         delete oldNode;
     }
 }
-
-void BST::add(Node * t,int h){
-    if(h==0)return;
-    
-    t->left=new Node(h-1,nullptr,nullptr);
-    t->right=new Node(h-1,nullptr,nullptr);
-    add(t->left,h-1);
-    add(t->right,h-1);
-    
-}
-
-void BST::createFull(int h){
-    root->data=h;
-    add(root,h);
-}
-

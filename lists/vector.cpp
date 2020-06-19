@@ -510,7 +510,7 @@ int main()
 
 
     }*/
-    {
+   /* {
     
         ::vector<int> u,v,t;
         u.push_back(1); u.push_back(2); u.push_back(3);
@@ -525,5 +525,17 @@ int main()
         std::cout << std::endl;
         std::cout << "done\n";
 
+    }*/
+    {
+
+        ::vector<TestClass<0>> v;
+        v.push_back(TestClass<0>(3, 4));
+        v.emplace_back(1, 2);
+        ::vector<TestClass<0>>::iterator itr;
+        for (itr = v.begin(); itr != v.end(); ++itr)
+            std::cout << itr->x() <<","<<itr->y()<< std::endl;
+        for (auto&&  e : v) {
+            std::cout << e.x() << std::endl;
+        }
     }
 }

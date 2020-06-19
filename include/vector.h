@@ -41,7 +41,7 @@ public:
         iterator operator-(size_t off) {
             return iterator(p - off);
         }
-        int& operator*() {
+        T& operator*() {
             return *p;
         }
         T* operator->() {
@@ -78,29 +78,52 @@ public:
 
     }
     
-    ~vector() {
+   /* ~vector() {
         if (_data != nullptr)
             delete[] _data;
-    }
+    }*/
     void push_back(T val) {
         if (_capacity == 0) {
-            _data = new T[1];
+            _data = (value_type *)operator new (sizeof(value_type));
             _capacity = 1;
         }
         else if (_size == _capacity) {
             resize();
         }
-        _data[_size++] = val;
-
+        new (_data+_size) value_type(  std::move(val));
+        _size++;
+    }
+ 
+    template<typename ...Ts>
+    value_type& emplace_back(Ts&& ...args) {
+        if (_capacity == 0) {
+            _data =(value_type *) operator new (sizeof(value_type));
+            _capacity = 1;
+        }
+        else if (_size == _capacity) {
+            resize();
+        }
+        
+        //_data[_size++] =value_type(args...) ;
+        new (_data + _size)  value_type(args...);
+        _size++;
+        return _data[_size - 1];
+    }
+    ~vector() {
+        for (int i = 0; i < _size; ++i) {
+            _data[i].~value_type();
+        }
+        delete _data;
     }
     void resize(){
-        T* old = _data;
+        value_type * old = _data;
         _capacity *= 2;
-        _data = new T[_capacity];
+        _data = (value_type *) operator new (sizeof(value_type)*_capacity);
         for (int i = 0; i < _size; ++i) {
-            _data[i] = old[i];
+            _data[i] = std::move(old[i]);
         }
-        delete[] old;
+        //TODO: should we call the dtor of the elemets first?
+        delete old;
     }
     int size() {
         return _size;
@@ -159,7 +182,13 @@ public:
         _x = rhs._x;
         _y = rhs._y;
     };
- 
+    TestClass(TestClass&& rhs) {
+        if (!nodebug) {
+            std::cout << "move ctor\n";
+        }
+        _x = rhs._x;
+        _y = rhs._y;
+    }
     TestClass& operator=(const TestClass& rhs) {
         if (!nodebug) {
             std::cout << "assignment\n";
@@ -170,7 +199,15 @@ public:
         _y = rhs._y;
         return *this;
     }
-   
+    TestClass& operator=(TestClass&& rhs) {
+        if (!nodebug) {
+            std::cout << "move \n";
+        }
+        _x = rhs._x;
+        _y = rhs._y;
+        return *this;
+
+    }
     ~TestClass() {
         if(!nodebug)std::cout << "dtor\n";
     }

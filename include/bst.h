@@ -34,7 +34,6 @@ private:
     int height(Node *);
     int numNodes(Node *);
     int numLeaves(Node *);
-    void add(Node *,int );
 public:
     BST(int x){
         root=new Node(x,NULL,NULL);
@@ -51,7 +50,5 @@ public:
     void printPreorder(){printPreorder(root);}
     void printPostorder(){printPostorder(root);}
     void printInorder(){printInorder(root);}
-    void createFull(int);
-    void readLevel();
 };
 
