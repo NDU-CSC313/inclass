@@ -528,15 +528,29 @@ int main()
     }*/
     {
 
-        ::vector<TestClass<0>> v;
+      /*  ::vector<TestClass<0>> v;
         v.push_back(TestClass<0>(3, 4));
         v.emplace_back(1, 2);
         v.push_back(TestClass<0>(5, 6));
         v.emplace_back(7, 8);
         v.emplace_back(9, 10);
         v.emplace_back(11, 12);
-        v.emplace_back(13, 14);
+        v.emplace_back(13, 14);*/
+        //::vector<TestClass<0>> u(5);
+       std::vector<TestClass<0>> u,v;
+
+        u.emplace_back(1, 2);
+
+        u.emplace_back(3, 4);
+        u.emplace_back(5, 6);
+        u.emplace_back(7, 8);
+        u.emplace_back(9, 10);
+        v = u;
         std::cout << "----------\n";
+        //std::vector<TestClass<0>> v = u;
+
+        //std::vector<TestClass<0>> v(5);
+
         /*std::vector<TestClass<0>> u;
         u.push_back(TestClass<0>(3, 4));
         u.emplace_back(1, 2);
@@ -550,4 +564,6 @@ int main()
             std::cout << e.x() << ","<<e.y()<<std::endl;
         }*/
     }
+    std::cout << "\n-------------------\n";
+    return 0;
 }

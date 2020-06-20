@@ -52,7 +52,9 @@ public:
     vector() :_size(0), _capacity(0),_data(nullptr) {}
     vector(int c) :_size(c), _capacity(c),_data(nullptr) {
         //create space for and initialize c elements
-        _data = new T[_capacity]{};
+        _data = (value_type*)operator new (_size*sizeof(value_type));
+        for (int i = 0; i < _size; ++i)
+            new (_data + i) value_type{};
     }
     /// @brief Copy constructor
     /// @param rhs right hand size
@@ -60,28 +62,43 @@ public:
     vector(const vector& rhs) {
         _size = rhs._size;
         _capacity = rhs._capacity;
-        _data = new T[_capacity];
-        for (int i = 0; i < _size; i++)
-            _data[i] = rhs._data[i];
+        _data = (value_type*)operator new (_capacity * sizeof(value_type));
 
+        //_data = new T[_capacity];
+        for (int i = 0; i < _size; i++)
+            new (_data+i) value_type( rhs._data[i]);
+
+    }
+    void resize() {
+        value_type* old = _data;
+        _capacity *= 2;
+        _data = (value_type*) operator new (sizeof(value_type) * _capacity);
+        for (int i = 0; i < _size; ++i) {
+            new (_data + i) value_type(std::move(old[i]));
+            old[i].~value_type();
+        }
+        // we can't do a memcpy because we have to call
+        // the dtor of every element first
+       // std::memcpy(_data, old, _size * sizeof(value_type));
+
+        operator delete (old);
     }
     vector& operator=(const vector& rhs) {
+        for (int i = 0; i < _size; ++i)
+            _data[i].~value_type();
+        operator delete (_data);
         _size = rhs._size;
         _capacity = rhs._capacity;
-        delete[] _data;
-        _data = new T[_capacity];
-        for (int i = 0; i < _size; ++i)
-            _data[i] = rhs._data[i];
-
+        
+        _data = (value_type *) operator new (sizeof(value_type) *_capacity);
+        for (int i = 0; i < _size; ++i) {
+            new (_data + i) value_type(rhs[i]);
+        }
+        
        return *this;
-
-
     }
     
-   /* ~vector() {
-        if (_data != nullptr)
-            delete[] _data;
-    }*/
+   
     void push_back(T val) {
         if (_capacity == 0) {
             _data = (value_type *)operator new (sizeof(value_type));
@@ -103,8 +120,6 @@ public:
         else if (_size == _capacity) {
             resize();
         }
-        
-        //_data[_size++] =value_type(args...) ;
         new (_data + _size)  value_type(args...);
         _size++;
         return _data[_size - 1];
@@ -113,21 +128,14 @@ public:
         for (int i = 0; i < _size; ++i) {
             _data[i].~value_type();
         }
-        delete _data;
+        operator delete (_data);
     }
-    void resize(){
-        value_type * old = _data;
-        _capacity *= 2;
-        _data = (value_type *) operator new (sizeof(value_type)*_capacity);
-        for (int i = 0; i < _size; ++i) {
-            _data[i] = std::move(old[i]);
-        }
-       // std::memcpy(_data, old, _size * sizeof(value_type));
-        //TODO: should we call the dtor of the elemets first?
-        delete old;
-    }
+   
     int size() {
         return _size;
+    }
+    int capacity() {
+        return _capacity;
     }
      iterator begin() noexcept  {
         return iterator(_data);
