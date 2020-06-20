@@ -64,7 +64,6 @@ public:
         _capacity = rhs._capacity;
         _data = (value_type*)operator new (_capacity * sizeof(value_type));
 
-        //_data = new T[_capacity];
         for (int i = 0; i < _size; i++)
             new (_data+i) value_type( rhs._data[i]);
 
@@ -75,12 +74,9 @@ public:
         _data = (value_type*) operator new (sizeof(value_type) * _capacity);
         for (int i = 0; i < _size; ++i) {
             new (_data + i) value_type(std::move(old[i]));
-            old[i].~value_type();
         }
-        // we can't do a memcpy because we have to call
-        // the dtor of every element first
-       // std::memcpy(_data, old, _size * sizeof(value_type));
-
+        for(int i=0;i<_size;++i)
+            old[i].~value_type();
         operator delete (old);
     }
     vector& operator=(const vector& rhs) {
