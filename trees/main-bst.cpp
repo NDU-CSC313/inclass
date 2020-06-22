@@ -1,47 +1,31 @@
-//
-//  main.cpp
-//  bst
-//
-//  Created by Hikmat Farhat on 15/3/12.
-//  Copyright (c) 2012 NDU. All rights reserved.
+// ConsoleApplication3.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
-
 #include "bst.h"
-using namespace std;
 
-int main (int argc, const char * argv[])
+int main()
 {
-
- 
-     BST bst(0);
-    bst.createFull(2);
-    //bst.readLevel();
-//    bst.insert(13);
-//    bst.insert(35);
-//    bst.insert(6);
-//    bst.insert(14);
-//    bst.insert(29);
-//    bst.insert(45);
-//    bst.insert(5);
-//    bst.insert(8);
-//    bst.insert(18);
-
-//   cout<<"Preorder\n";
-//   bst.printPreorder();
-//    cout<<"Postorder\n";
-//    bst.printPostorder();
-//    cout<<"Inorder\n";
-//    bst.printInorder();
-//    cout<<"starting"<<endl;
-//    cout<<"----------------------"<<endl;
-   cout<<"the height of the tree is"<<bst.height()<<endl;
-    //cout<<"for a total of "<<bst.numNodes()<<" number of nodes\n";
-    //cout<<"of which "<<bst.numLeaves()<<" are leaves\n";
-    std::cout<<bst.printLevel();
-    cout<<"Done"<<endl;
-    cout<<"-----------"<<endl;
-    return 0;
+    bst<double> t;
+    t.insert(10);
+    t.insert(6);
+    t.insert(20);
+    t.insert(8);
+    t.insert(3);
+    t.postorder();
+    std::cout << "-----------\n";
+    std:: cout << std::boolalpha;
+    std::cout << t.find(3) << std::endl;
+    std::cout << t.find(7) << std::endl;
+    std::  cout << "\n------heights --------\n";
+    std::cout << t.height() << std::endl;
+    t.insert(4);
+    std::cout << t.height() << std::endl;
+    std::cout << "\n----erase---\n";
+    t.erase(6);
+    t.postorder();
+    /*
+    std::cout << '\n';
+    auto min = t.findMin();
+    std::cout << min->_val << std::endl;*/
 }
-
