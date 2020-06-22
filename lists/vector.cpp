@@ -565,7 +565,7 @@ int main()
         }*/
     }
     using namespace std;
-    vector<int> v;
+    ::vector<int> v;
     std::cout << "\n-------------------\n";
     return 0;
 }

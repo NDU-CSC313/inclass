@@ -14,18 +14,18 @@ template<typename T>
 class bst {
 private:
 	Node<T>* root;
-	void insert(Node<T>* &, int);
+	void insert(Node<T>* &, T);
 	void postorder(const Node<T>*);
-	bool find(const Node<T>*, int);
+	bool find(const Node<T>*, T);
 	int height(const Node<T>*);
 	int numNodes(const Node<T>*);
 	Node<T> * findMin(Node<T>*);
 	void erase(Node<T>* &, T);
 public:
 	bst() :root(nullptr) {}
-	void insert(int );
+	void insert(T );
 	void postorder();
-	bool find(int);
+	bool find(T);
 	int height();
 	int numNodes();
 	T findMin();
@@ -49,19 +49,19 @@ void bst<T>::postorder() {
 }
 template<typename T>
 
-void bst<T>::insert(Node<T>* &t, int val) {
+void bst<T>::insert(Node<T>* &t, T val) {
 	if (t == nullptr) t = new Node<T>(val);
     else if (val > t->val)insert(t->right, val);
 	else insert(t->left, val);
 }
 template<typename T>
 
-void bst<T>::insert(int v) {
+void bst<T>::insert(T v) {
 	insert(root, v);
 }
 
 template<typename T>
-bool bst<T>::find(const Node<T>* t, int val) {
+bool bst<T>::find(const Node<T>* t, T val) {
 	if (t == nullptr) return false;
 	if (t->val == val)return true;
 	else if (t->val < val) return find(t->right, val);
@@ -69,7 +69,7 @@ bool bst<T>::find(const Node<T>* t, int val) {
 
 }
 
-template<typename T> bool bst<T>::find(int v) {
+template<typename T> bool bst<T>::find(T v) {
 	return find(root, v);
 }
 template <typename T>

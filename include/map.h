@@ -1,133 +1,136 @@
 #pragma once
 #include <iostream>
 #include <algorithm>
-template<typename T>
+template<typename Tk,typename Tv>
 struct Node {
-	T val;
+	Tk key;
+	Tv val;
+	Node* parent;
 	Node* left;
 	Node* right;
-	Node(T v = T{}, Node* l = nullptr, Node* r = nullptr)
-		:val(v), left(l), right(r) {}
+	char is_nil = 0;
+	Node(Tk k,Tv v, Node* p = nullptr,Node* l = nullptr, Node* r = nullptr)
+		:key(k),val(v),parent(p), left(l), right(r){}
 };
 
-template<typename T>
-class bst {
+template<typename Tk,typename Tv>
+class map {
 private:
-	Node<T>* root;
-	void insert(Node<T>* &, int);
-	void postorder(const Node<T>*);
-	bool find(const Node<T>*, int);
-	int height(const Node<T>*);
-	int numNodes(const Node<T>*);
-	Node<T> * findMin(Node<T>*);
-	void erase(Node<T>* &, T);
+	Node<Tk, Tv>* head;
+//	Node<Tk,Tv>* root;
+	void insert(Node<Tk,Tv>* &, std::pair<Tk,Tv>);
+	void inorder(const Node<Tk,Tv>*);
+	Node<Tk,Tv> * findMin(Node<Tk,Tv>*);
+	void erase(Node<Tk,Tv>* &, Tk);
 public:
-	bst() :root(nullptr) {}
-	void insert(int );
-	void postorder();
-	bool find(int);
-	int height();
-	int numNodes();
-	T findMin();
-	void erase(T );
+	map() {
+		head = new Node<Tk,Tv>(Tk{}, Tv{});
+		head->is_nil = 1;
+	}
+	void insert(std::pair<Tk,Tv> );
+	void inorder();
+	void erase(Tk );
+	Node<Tk, Tv>* next(Node<Tk, Tv>* t);
+	Node<Tk, Tv>* begin();
+	Node<Tk, Tv>* end();
 
 };
-template<typename T>
-void bst<T>::postorder(const Node<T>* t) {
+template<typename Tk,typename Tv>
+void map<Tk,Tv>::inorder(const Node<Tk,Tv>* t) {
 
 	if (t == nullptr)return;
-	postorder(t->left);
-	postorder(t->right);
-	std::cout << t->val << ",";
+	inorder(t->left);
+	std::cout << t->key << "has parent ";
+	if (t->parent)std::cout << t->parent->key << "\n";
+	else std::cout<<"null" << std::endl;
+	inorder(t->right);
 
 }
-template<typename T>
-
-void bst<T>::postorder() {
-	postorder(root);
-
-}
-template<typename T>
-
-void bst<T>::insert(Node<T>* &t, int val) {
-	if (t == nullptr) t = new Node<T>(val);
-    else if (val > t->val)insert(t->right, val);
-	else insert(t->left, val);
-}
-template<typename T>
-
-void bst<T>::insert(int v) {
-	insert(root, v);
+template<typename Tk,typename Tv>
+Node<Tk, Tv>* map<Tk,Tv>::next(Node<Tk, Tv>* t) {
+	if (t->right == nullptr) {
+		Node<Tk, Tv>* p;
+		while (!(p = t->parent)->is_nil && p->right == t)
+			t = p;
+		t = p;
+	}
+	else t=findMin(t->right);
+	return t;
 }
 
-template<typename T>
-bool bst<T>::find(const Node<T>* t, int val) {
-	if (t == nullptr) return false;
-	if (t->val == val)return true;
-	else if (t->val < val) return find(t->right, val);
-	else return find(t->left, val);
+template<typename Tk,typename Tv>
+Node<Tk, Tv>* map<Tk, Tv>::begin() {
+	return head->left;
+}
+template<typename Tk, typename Tv>
+Node<Tk, Tv>* map<Tk, Tv>::end() {
+	return head;
+}
+template<typename Tk,typename Tv>
+void map<Tk, Tv>::insert(Node<Tk, Tv>*& t, std::pair<Tk, Tv> p) {
+	if (t == nullptr) {
+		std::cout << "error\n"; return;
+	}
+	if (p.first > t->key) {
+		if (t->right == nullptr) {
+			t->right = new Node<Tk, Tv>(p.first, p.second, t);
+			if (head->right == t)head->right = t->right;
+		}
+		else insert(t->right, p);
 
+	}
+	else {
+		if (t->left == nullptr) {
+			t->left = new Node<Tk, Tv>(p.first, p.second, t);
+			if (head->left == t)head->left = t->left;
+		}
+		else insert(t->left, p);
+
+	}
 }
 
-template<typename T> bool bst<T>::find(int v) {
-	return find(root, v);
-}
-template <typename T>
-int bst<T>::height(const Node<T>* t) {
-	if (t == nullptr) return -1;
-	int hl = height(t->left);
-	int hr = height(t->right);
-	return std::max(hl, hr) + 1;
-}
-template <typename T>
-int bst<T>::height() {
-	return height(root);
+template<typename Tk,typename Tv>
+void map<Tk, Tv>::insert(std::pair<Tk, Tv> v) {
+	if (head->parent== nullptr) {
+		head->parent= new Node < Tk, Tv>(v.first, v.second,head);
+		head->left = head->parent;
+		head->right = head->parent;
+	}
+
+	else insert(head->parent, v);
 }
 
-
-template <typename T>
-int bst<T>::numNodes(const Node<T>* t) {
-	if (t == nullptr) return 0;
-	int nl = numNodes(t->left);
-	int nr = numNodes(t->right);
-	return 1 + nl + nr;
-
-}
-template<typename T>
-int bst<T>::numNodes() {
-	return numNodes(root);
-}
-template<typename T>
-
-Node<T> * bst<T>::findMin(Node<T>* t) {
+template<typename Tk,typename Tv>
+Node<Tk,Tv> * map<Tk,Tv>::findMin(Node<Tk,Tv>* t) {
 	if (t->left == nullptr) return t;
 	else return findMin(t->left);
 
 }
-template <typename T>
-void bst<T>::erase(Node<T>* & t, T val) {
+template <typename Tk,typename Tv>
+void map<Tk,Tv>::erase(Node<Tk,Tv>* & t, Tk key) {
 	if (t == nullptr) return;
 	
-	if (t->val < val)erase(t->right, val);
-	else if (t->val > val) erase(t->left, val);
+	if (t->key < key)erase(t->right, key);
+	else if (t->key> key) erase(t->left, key);
 	// found the node
 	else if (t->left != nullptr && t->right != nullptr) {
-			Node<T>* min = findMin(t->right);
-			t->val = min->val;
-			erase(t->right, min->val);
+			Node<Tk,Tv>* min = findMin(t->right);
+			t->key = min->key;
+			erase(t->right, min->key);
 		}
 	else {
-		Node<T>* old = t;
+		Node<Tk,Tv>* old = t;
 		t = (t->left != nullptr) ? t->left : t->right;
 		delete old;
 	}
 
 }
-template <typename T>
-void bst<T>::erase(T val) {
-	erase(root, val);
+
+template <typename Tk,typename Tv>
+void map<Tk,Tv>::erase(Tk key) {
+	erase(root, key);
 }
-template<typename T>
-T bst<T>::findMin() {
-	return findMin(root)->val;
+template<typename Tk,typename Tv>
+void map<Tk, Tv>::inorder() {
+	inorder(head->parent);
 }
