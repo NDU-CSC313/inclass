@@ -20,7 +20,7 @@ private:
 	int height(const Node<T>*);
 	int numNodes(const Node<T>*);
 	Node<T> * findMin(Node<T>*);
-	void erase(Node<T>*, T);
+	void erase(Node<T>* &, T);
 public:
 	bst() :root(nullptr) {}
 	void insert(int );
@@ -105,19 +105,21 @@ Node<T> * bst<T>::findMin(Node<T>* t) {
 
 }
 template <typename T>
-void bst<T>::erase(Node<T>* t, T val) {
+void bst<T>::erase(Node<T>* & t, T val) {
 	if (t == nullptr) return;
 	
 	if (t->val < val)erase(t->right, val);
 	else if (t->val > val) erase(t->left, val);
 	// found the node
-	else {
-		if (t->left != nullptr && t->right != nullptr) {
+	else if (t->left != nullptr && t->right != nullptr) {
 			Node<T>* min = findMin(t->right);
 			t->val = min->val;
 			erase(t->right, min->val);
 		}
-
+	else {
+		Node<T>* old = t;
+		t = (t->left != nullptr) ? t->left : t->right;
+		delete old;
 	}
 
 }

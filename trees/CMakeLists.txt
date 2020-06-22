@@ -1,6 +1,6 @@
 add_executable(avl main-avl.cpp avl.cpp "${PROJECT_SOURCE_DIR}/include/avl.h")
 add_executable(map main-map.cpp "${PROJECT_SOURCE_DIR}/include/map.h")
-add_executable(bst main-bst.cpp bst.cpp "${PROJECT_SOURCE_DIR}/include/bst.h")
+add_executable(bst main-bst.cpp "${PROJECT_SOURCE_DIR}/include/bst.h")
 target_include_directories(avl PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_include_directories(bst PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_include_directories(map PUBLIC "${PROJECT_SOURCE_DIR}/include")
