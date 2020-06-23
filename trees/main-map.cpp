@@ -8,6 +8,7 @@
 
 #include <iostream>
 //#include <map>
+#include <vector>
 #include <string>
 #include "map.h"
 //using namespace std;
@@ -31,7 +32,13 @@ int main(int argc, const char* argv[])
         std::cout << itr->key << "," << itr->val << std::endl;
         itr = m.next(itr);
     }
-   
+    m.erase("person2");
+    std::cout << "\n after delete\n";
+    itr = m.begin();
+    while (itr != m.end()) {
+        std::cout << itr->key << "," << itr->val << std::endl;
+        itr = m.next(itr);
+    }
    /*while(itr!=m.end()) {
         auto [x, y] = *itr;
         std::cout << x << "==>" << y << std::endl;
