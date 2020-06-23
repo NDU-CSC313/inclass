@@ -5,19 +5,22 @@
 
 #define EXAMPLE6
 
-#ifdef EXAMPLE1
-int main(){
+#ifdef EXAMPLE0
+int main() {
 	//max heap by default
 
-	/*std::priority_queue<int> q;
+	std::priority_queue<int> q;
 	q.push(10); q.push(20); q.push(4); q.push(7);
 	while (!q.empty()) {
 		std::cout << q.top() << ",";
 		q.pop();
 	}
-	std::cout << std::endl;*/
+	std::cout << std::endl;
 	//min heap
-	
+}
+#endif
+#ifdef EXAMPLE1
+int main(){
 	std::priority_queue<int,std::vector<int>, std::greater<int> > p;
 	p.push(4); p.push(19); p.push(25); p.push(5); p.push(8); p.push(1);
 	while (!p.empty()) {
