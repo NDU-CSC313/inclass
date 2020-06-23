@@ -3,6 +3,4 @@
 #include <algorithm>
 template<typename T>
 class heap {
-private:
-T* _data;
 };

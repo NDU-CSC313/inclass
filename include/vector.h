@@ -106,7 +106,6 @@ public:
         new (_data+_size) value_type(  std::move(val));
         _size++;
     }
- 
     template<typename ...Ts>
     value_type& emplace_back(Ts&& ...args) {
         if (_capacity == 0) {
