@@ -1,4 +1,4 @@
-
+#include <iostream>
 class Test {
 	int _x, _y;
 public:
@@ -9,10 +9,17 @@ public:
 	int y() const {
 		return _y;
 	}
-#ifdef EXAMPLE3
-	bool operator<(const Test& rhs) const  {
+#if defined(EXAMPLE3) || defined(EXAMPLE5) || defined(EXAMPLE6)
+	bool operator<(const Test& rhs) const {
 		return _x < rhs.x();
-    }
+	}
 #endif
 
 };
+
+#if defined (EXAMPLE5) || defined (EXAMPLE6)
+std::ostream& operator<<(std::ostream& os, const Test& t) {
+	os <<"(" <<t.x() << "," << t.y()<<")" << std::endl;
+	return os;
+}
+#endif

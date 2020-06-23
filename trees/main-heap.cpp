@@ -2,9 +2,8 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
-#include "heap.h"
 
-#define EXAMPLE2
+#define EXAMPLE6
 
 #ifdef EXAMPLE1
 int main(){
@@ -63,3 +62,35 @@ int main() {
 
 }
 #endif
+
+#ifdef EXAMPLE4
+#include "heap.h"
+int main() {
+	heap<int> h;
+	h.push(10);h.push(8);h.push(30);h.push(9);	h.push(12);
+	h.print();
+	h.pop();
+	h.push(5);	h.push(40);	h.push(25);
+	h.pop();
+	h.print();
+}
+#endif
+#ifdef EXAMPLE5
+#include "heap.h"
+#include "Test.h"
+int main() {
+	heap<Test> h;
+	h.push(Test(7, 2)); h.push(Test(3, 9)); h.push(Test(1, 13)); h.push(Test(9, 10));
+	h.print();
+}
+#endif
+
+#ifdef EXAMPLE6
+#include "heap.h"
+#include "Test.h"
+int main() {
+	heap<Test> h;
+	h.push(Test(7, 2)); h.push(Test(3, 9)); h.push(Test(1, 13)); h.emplace(9, 10);
+	h.print();
+}
+#endif 

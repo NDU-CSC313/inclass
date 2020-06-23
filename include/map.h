@@ -10,7 +10,7 @@ struct Node {
 	Node* right;
 	char is_nil = 0;
 	Node(Tk k, Tv v, Node* p = nullptr, Node* l = nullptr, Node* r = nullptr)
-		:key(k), val(v), parent(p), left(l), right(r) {}
+		:key(k), val(v), parent(p), left(l), right(r) ,is_nil(0){}
 };
 
 template<typename Tk, typename Tv>
@@ -31,6 +31,8 @@ public:
 	void inorder();
 	void erase(Tk);
 	Node<Tk, Tv>* next(Node<Tk, Tv>* t);
+	Node<Tk, Tv>* prev(Node<Tk, Tv>* t);
+
 	Node<Tk, Tv>* begin();
 	Node<Tk, Tv>* end();
 
@@ -46,8 +48,25 @@ void map<Tk, Tv>::inorder(const Node<Tk, Tv>* t) {
 	inorder(t->right);
 
 }
+template <typename Tk,typename Tv>
+Node<Tk, Tv>* map<Tk, Tv>::prev(Node<Tk, Tv>* t) 
+{
+	if (t == head)return t->right;
+	if (t == head->left) {
+		throw std::exception("cannot decrement \n");
+	}
+	if (t->left == nullptr) {
+		Node<Tk, Tv>* p;
+		while (!(p = t->parent)->is_nil && p->left == t)
+			t = p;
+		t = p;
+	}
+	else t = findMax(t->left);
+	return t;
+}
 template<typename Tk, typename Tv>
 Node<Tk, Tv>* map<Tk, Tv>::next(Node<Tk, Tv>* t) {
+	if (t == head) throw std::exception("cannot increment past the end\n");
 	if (t->right == nullptr) {
 		Node<Tk, Tv>* p;
 		while (!(p = t->parent)->is_nil && p->right == t)
@@ -110,7 +129,7 @@ Node<Tk, Tv>* map<Tk, Tv>::findMin(Node<Tk, Tv>* t) {
 template<typename Tk, typename Tv>
 Node<Tk, Tv>* map<Tk, Tv>::findMax(Node<Tk, Tv>* t) {
 	if (t==nullptr || t->right == nullptr) return t;
-	else return findMin(t->left);
+	else return findMin(t->right);
 
 }
 template <typename Tk, typename Tv>
