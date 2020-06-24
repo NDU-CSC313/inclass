@@ -11,20 +11,20 @@ public:
 	int y() const {
 		return _y;
 	}
-#if defined(EXAMPLE3) || defined(EXAMPLE5) || defined(EXAMPLE6) || defined(EXAMPLE7)
+//#if defined(EXAMPLE3) || defined(EXAMPLE5) || defined(EXAMPLE6) || defined(EXAMPLE7)
 	bool operator<(const Test& rhs) const {
 		return _x < rhs.x();
 	}
 	bool operator>(const Test& rhs) const {
 		return _x > rhs.x();
 	}
-#endif
+//#endif
 
 };
 
-#if defined (EXAMPLE5) || defined (EXAMPLE6)
+//#if defined (EXAMPLE5) || defined (EXAMPLE6)
 std::ostream& operator<<(std::ostream& os, const Test& t) {
 	os <<"(" <<t.x() << "," << t.y()<<")" << std::endl;
 	return os;
 }
-#endif
+//#endif
