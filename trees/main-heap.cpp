@@ -3,7 +3,6 @@
 #include <vector>
 #include <algorithm>
 
-#define EXAMPLE6
 
 #ifdef EXAMPLE0
 int main() {
