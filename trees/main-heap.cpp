@@ -95,4 +95,38 @@ int main() {
 	h.push(Test(7, 2)); h.push(Test(3, 9)); h.push(Test(1, 13)); h.emplace(9, 10);
 	h.print();
 }
+#endif
+
+#ifdef EXAMPLE7
+#include "Test.h"
+struct a_struct {
+	std::string name;
+	double value;
+	int size;
+	a_struct(std::string n, double v, int s) :name(n), value(v), size(s) {
+		std::cout << "ctor with name=" << name
+			<< " value=" << value << " size=" << size << std::endl;
+	}
+
+};
+
+template<typename T, typename ...Ts>
+void create_type(Ts&& ...args) {
+	T t(args...);
+}
+int main() {
+	create_type<a_struct>("one", 1.1, 4);
+	create_type<Test>(10, 20);
+}
 #endif 
+#ifdef EXAMPLE8
+#include "Source1.cpp"
+#include "Test.h"
+int main(){
+	heap<Test> h;
+	h.push(Test(30,40));
+	h.push(Test(50, 60));
+	h.emplace(70, 34);
+}
+#endif
+
