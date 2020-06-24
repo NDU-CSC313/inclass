@@ -21,6 +21,8 @@ template<typename T> template<typename ...Ts>
 void heap<T> ::  emplace(Ts&& ...args) {
 	//_data.emplace_back(std::forward<Ts>(args)...);
 	_data.emplace_back(args...);
+	_size++;
+	percolate_up();
 }
 template<typename T>
 void heap<T>::pop() {
