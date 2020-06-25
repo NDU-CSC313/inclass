@@ -16,22 +16,22 @@ public:
         else return false;
     }
 };
-int main()
-{
 
+
+
+#ifdef EXAMPLE1
     /* exercise 1 */
     /* we can declare vectors of any type */
     /* typical usage is to APPEND to the vector */
     /* using the push_back() method */
-
-    /* {
+#include <iostream>
+#include <vector>
+     int main(){
 
       std::vector<int> v;
       std::vector<std::string> sv;
-      v.push_back(1);
-      v.push_back(2);
-      sv.push_back("one");
-      sv.push_back("two");
+      v.push_back(1); v.push_back(2);
+      sv.push_back("one");sv.push_back("two");
       for (int i = 0; i < sv.size(); ++i)
           std::cout << sv[i] << ",";
       std::cout << "\n";
@@ -40,13 +40,16 @@ int main()
        for (int& x : v)
            std::cout << x <<",";
        std::cout << "\n";
-      }*/
+      }
 
-
+#endif
+#ifdef EXAMPLE2
     /* exercise 2: illustration of dynamically */
     /* resizing the interal storage of a vector */
-
-      /* {
+#include <iostream>
+#include <vector>
+     int main()
+       {
 
            int size = 2;
            int* p = new int[2];
@@ -66,11 +69,14 @@ int main()
            for (int i = 0; i < size; ++i)
                std::cout << p[i] << ",";
            std::cout << "\n";
-       }*/
+       }
+#endif 
 
+#ifdef EXAMPLE3
     /* exercise 3: a more efficient way of reallocation */
     /* doubling the size instead of increasing by one every time */
-       /*{
+     int main()  
+     {
            int size = 2;
            int* p = new int[2];
            for (int i = 0; i < 10; ++i) {
@@ -89,46 +95,56 @@ int main()
            for (int i = 0; i < size; ++i)
                std::cout << p[i] << ",";
            std::cout << "\n";
-       }*/
+       }
+#endif 
 
+#ifdef EXAMPLE4
     /* exercise 4: we need to values to keep track of */
     /* elements. The capacity and the size */
+     int main()
+       {
+            int capacity = 2;
+            int size = 0;
+            int* p = new int[capacity];
+            for (int i = 0; i < 10; ++i) {
+                if (capacity == size) {
+                    std::cout << "copying\n";
+                    int* old = p;
+                    p = new int[2 * capacity];
+                    for (int j = 0; j < size; ++j)
+                        p[j] = old[j];
+                    capacity *= 2;
+                }
+                p[i] = i;
+                size++;
 
-       //{
-       //     int capacity = 2;
-       //     int size = 0;
-       //     int* p = new int[capacity];
-       //     for (int i = 0; i < 10; ++i) {
-       //         if (capacity == size) {
-       //             std::cout << "copying\n";
-       //             int* old = p;
-       //             p = new int[2 * capacity];
-       //             for (int j = 0; j < size; ++j)
-       //                 p[j] = old[j];
-       //             capacity *= 2;
-       //         }
-       //         p[i] = i;
-       //         size++;
+            }
+            std::cout << "------content-------\n";
+            for (int i = 0; i < size; ++i)
+                std::cout << p[i] << ",";
+            std::cout << "\n";
+        }
+#endif 
 
-       //     }
-       //     std::cout << "------content-------\n";
-       //     for (int i = 0; i < size; ++i)
-       //         std::cout << p[i] << ",";
-       //     std::cout << "\n";
-       // }
-
+#ifdef EXAMPLE5
     /* exercise 5: illustration of the growth of the */
     /* capacity of a vector in the STL */
-        /*{   std::vector<int> v;
+#include <iostream>
+#include <vector>
+     int main()
+        {   std::vector<int> v;
              for (int i = 0; i < 100; i++) {
             std::cout << "i= " << i << ", capacity=" << v.capacity() << std::endl;
             v.push_back(i);
               }
-        }*/
+        }
+#endif 
 
+#ifdef EXAMPLE6
     /* exercise 6: using a pointer instead of index to iterate */
     /* over the elements of a container */
-        /* int* p = new int[10];
+     int main() {
+         int* p = new int[10];
          int* begin = p;
          int* end = p + 10;
          int i = 0;
@@ -138,52 +154,68 @@ int main()
          for (int i = 0; i < 10; i++)
              std::cout << p[i] << ",";
          std::cout << "\n";
-         */
+     }
+#endif 
 
+#ifdef EXAMPLE7
         //exercise 7: an iterator is a generalization of pointer 
-
-         /* {
+#include "Test.h"
+     int main()
+          {
               Container c(10);
 
           for (Container::Iterator itr = c.begin(); itr != c.end(); ++itr)
               std::cout << *itr << ",";
-          }*/
+          }
+#endif 
 
+#ifdef EXAMPLE8
    /* exercise 8: using an iterator with std::vector*/
-          //{
-          //std::vector<int> v;
-          //v.push_back(1); v.push_back(2); v.push_back(3);
-          //for (auto itr = v.begin(); itr != v.end(); ++itr)
-          //    std::cout << *itr << ",";
-          //std::cout << "\n";
-          //}
+#include <iostream>
+#include <vector>
+     int main()
+          {
+          std::vector<int> v;
+          v.push_back(1); v.push_back(2); v.push_back(3);
+          for (auto itr = v.begin(); itr != v.end(); ++itr)
+              std::cout << *itr << ",";
+          std::cout << "\n";
+          }
+#endif 
 
+#ifdef EXAMPLE9
     /*exercise 9: storing a user defined type
     which illustrates the call for ctor and dtors*/
-         /* {
+#include <iostream>
+#include <vector>
+#include "Test.h"
+     int main()
+          {
               std::vector<TestClass<0>> v;
               TestClass<0> a(1, 2);
               TestClass<0> b(3, 4);
               v.push_back(a);
               v.push_back(b);
 
-          }*/
-
-  /*  exercise 10: using array-like indices with vectors*/
-
-          /* {
-           std::vector<TestClass<0>> v(3);
-           TestClass<0> a(1, 2);
-           TestClass<0> b(3, 4);
-           v[0] = a;
+          
+  /*  using array-like indices with vectors*/
+           std::vector<TestClass<0>> u(3);
+           u[0] = a;
            v[1] = b;
-           std::cout << "size= " << v.size() << std::endl;
+           std::cout << "size= " << u.size() << std::endl;
            std::cout << "----------------\n";
 
-           }*/
+           }
+#endif 
 
-      /*  exercise 11: reseving space ahead of time*/
-           /*   {
+#ifdef EXAMPLE10
+      /*  exercise 10: reseving space ahead of time
+          and removing elements from a vector*/
+#include <iostream>
+#include <vector>
+#include "Test.h"
+              int main()
+              {
               std::vector<TestClass<0>> v;
               v.reserve(2);
               TestClass<0> a(1, 2);
@@ -192,55 +224,59 @@ int main()
               v.push_back(b);
               std::cout << "size= " << v.size() << std::endl;
               std::cout << "----------------\n";
-              }*/
+              
 
-  /*  exercise 12: removing elements from a vector*/
-             /* {
-              std::vector<TestClass<0>> v;
-              v.push_back(TestClass<0>(1, 2));
-              v.push_back(TestClass<0>(3, 4));
-              std::cout << v.size() << std::endl;
-              v.pop_back();
-              std::cout << v.size() << std::endl;
+  /*  e removing elements from a vector*/
+              
+              std::vector<TestClass<0>> u;
+              u.push_back(TestClass<0>(1, 2));
+              u.push_back(TestClass<0>(3, 4));
+              std::cout << u.size() << std::endl;
+              u.pop_back();
+              std::cout << u.size() << std::endl;
 
-              }*/
+              }
+#endif 
 
+#ifdef EXAMPLE11
+  /*     exercise 11: inserting and deleting at arbitrary positions*/
+#include <iostream>
+#include <vector>
+#include "Test.h"
+              int main() {
+               std::vector<TestClass<0>> v;
+               v.reserve(4);
+               TestClass<0> a(1, 2);
+               TestClass<0> b(3, 4);
+               TestClass<0> c(5, 6);
+               TestClass<0> d(7, 8);
 
-  /*     exercise 13: inserting at arbitrary positions*/
-               //{
-               //std::vector<TestClass<0>> v;
-               //v.reserve(4);
-               //TestClass<0> a(1, 2);
-               //TestClass<0> b(3, 4);
-               //TestClass<0> c(5, 6);
-               //TestClass<0> d(7, 8);
+               v.push_back(a);// begin()
+               v.push_back(b);// begin+1
+               v.push_back(c);//begin+2
+               auto itr=v.insert(v.begin()+1,d);
+               std::cout << "listing elements\n";
+               for (auto i = v.begin(); i != v.end(); ++i) {
+                   if (i == itr)std::cout << "element inserted here: ";
+                   std::cout << i->x() << "," << i->y() << std::endl;
 
-               //v.push_back(a);// begin()
-               //v.push_back(b);// begin+1
-               //v.push_back(c);//begin+2
-               //auto itr=v.insert(v.begin()+1,d);
-               //std::cout << "listing elements\n";
-               //for (auto i = v.begin(); i != v.end(); ++i) {
-               //    if (i == itr)std::cout << "element inserted here: ";
-               //    std::cout << i->x() << "," << i->y() << std::endl;
+               }
+               
 
-               //}
-               //}
+  /*   deleting at arbitrary positions*/
 
-  /*  exercise 14: deleting at arbitrary positions*/
-
-               //{
-               //std::vector<TestClass<0>> v(5);
-               //TestClass<0> a(1, 2);
-               //TestClass<0> b(3, 4);
-               //v[0] = a;
-               //v[1] = b;
-               //std::cout << "size= " << v.size() << std::endl;
-               //std::cout << "----------------\n";
-               //v.erase(v.begin());
-               //std::cout << "-------done----\n";
-               //}
-
+               
+               std::vector<TestClass<0>> v(5);
+               TestClass<0> a(1, 2);
+               TestClass<0> b(3, 4);
+               v[0] = a;
+               v[1] = b;
+               std::cout << "size= " << v.size() << std::endl;
+               std::cout << "----------------\n";
+               v.erase(v.begin());
+               std::cout << "-------done----\n";
+               }
+#endif 
     /* exercise 15: deleting certain values from a vector */
             /* {
              std::vector<TestClass<0>> v;
@@ -526,9 +562,9 @@ int main()
         std::cout << "done\n";
 
     }*/
-    {
+    /*{
 
-      /*  ::vector<TestClass<0>> v;
+        ::vector<TestClass<0>> v;
         v.push_back(TestClass<0>(3, 4));
         v.emplace_back(1, 2);
         v.push_back(TestClass<0>(5, 6));
@@ -563,9 +599,3 @@ int main()
        /* for (auto&&  e : v) {
             std::cout << e.x() << ","<<e.y()<<std::endl;
         }*/
-    }
-    using namespace std;
-    ::vector<int> v;
-    std::cout << "\n-------------------\n";
-    return 0;
-}
