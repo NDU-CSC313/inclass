@@ -11,13 +11,19 @@ class heap {
 public:
 	heap():_size(0),_data(1) {}
 	void push(T);
-    template<typename ...Ts> void emplace(Ts&& ...args);
+    template<typename ...Ts> 
+	void emplace(Ts&& ...args);
 	void pop();
 	const T top();
 	void print();
 };
+template<typename T>
+void heap<T>::push(T v) {
+	_data.push_back(v);
+	_size++;
+	percolate_up();
+}
 template<typename T> template<typename ...Ts> 
-
 void heap<T> ::  emplace(Ts&& ...args) {
 	//_data.emplace_back(std::forward<Ts>(args)...);
 	_data.emplace_back(args...);
@@ -36,12 +42,7 @@ template<typename T>
 const T heap<T>::top() {
 	return _data[1];
 }
-template<typename T>
-void heap<T>::push(T v) {
-	_data.push_back(v);
-	_size++;
-	percolate_up();
-}
+
 template<typename T>
 void heap<T>::percolate_up() {
 	int pos = _size;

@@ -31,14 +31,15 @@ int main() {
 
 #ifdef EXAMPLE3
 int main() {
-	
+	// int grades[20]; grade[10]=90;
 	std::map< std::string, int> m;
 	m["student1"] = 80;
 	m["student2"] = 75;
-	m["student3"] = 94;
+	m["jason"] = 94;
+
 	for (auto& [name,grade] : m)
 		grade = grade+ 10;
-	m["student3"] = 100;
+	m["jason"] = 100;
 	for (auto& x : m)
 		std::cout << "(" << x.first << "=>" << x.second << ")\n";
 
@@ -49,7 +50,6 @@ int main() {
 #include <iterator>
 #include <algorithm>
 int main() {
-
 	std::map< std::string, int> m;
 	m["student1"] = 92;
 	m["student2"] = 75;

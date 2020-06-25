@@ -94,7 +94,7 @@ struct a_struct {
 
 template<typename T, typename ...Ts>
 void create_type(Ts&& ...args) {
-	T t(args...);
+	T x(args...);// Test x(10,20);
 }
 int main() {
 	std::cout << "EXAMPLE3\n";
