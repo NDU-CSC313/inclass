@@ -5,4 +5,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(lists)
 add_subdirectory(trees)
+add_subdirectory(sorting)
 message(${PROJECT_SOURCE_DIR})
