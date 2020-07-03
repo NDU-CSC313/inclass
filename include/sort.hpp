@@ -25,6 +25,43 @@ void insertion(std::vector<int>& a) {
 		a[k] = tmp;
 	}
 }
+
+template<typename RanIt>
+auto Prev_iter(RanIt itr) {
+	return --itr;
+}
+template<typename RanIt>
+auto Next_iter(RanIt itr) {
+	return ++itr;
+}
+
+template<typename RanIt>
+auto partition3(RanIt start, RanIt end) {
+	auto mid = start + ((end - start) >> 1);
+	median3(start, mid, Prev_iter(end));
+	auto pfirst = Prev_iter(end);
+	std::iter_swap(pfirst, mid);
+	auto i = start, j = start;
+	while (*i < *pfirst) {
+		i++; j++;
+	}
+	while (j != pfirst) {
+		if (*j < *pfirst) {
+			std::iter_swap(i, j);
+			i++; j++;
+		}
+		else if (*j == *pfirst) {
+			std::iter_swap(j, --pfirst);
+		}
+		else j++;
+
+	}
+	RanIt first = i, last = i;
+	for (auto itr = pfirst; itr < end; ++itr, ++i, ++last) {
+		std::iter_swap(itr, i);
+	}
+	return std::pair<RanIt, RanIt>(first, last);
+}
 template<typename T>
 int partition(std::vector<T>& v, int start, int end) {
 
@@ -59,14 +96,7 @@ void median3(RanIt first,RanIt mid, RanIt last) {
 			std::iter_swap(mid, first);
 	}
 }
-template<typename RanIt>
-auto Prev_iter(RanIt itr) {
-	return --itr;
-}
-template<typename RanIt>
-auto Next_iter(RanIt itr) {
-	return ++itr;
-}
+// similar to microsoft STL implementation
 template <typename T,typename RanIt>
 auto partition2(T& cont,RanIt start, RanIt end) {
 	if (start == end) return std::pair<RanIt,RanIt>(start,end);
@@ -135,40 +165,24 @@ auto partition(RanIt start, RanIt end) {
 		}
 		j++;
 	}
-	return i;
+	return --i;
 }
-template<typename T,typename RanIt>
-auto partition3(T& cont,RanIt start, RanIt end) {
-	auto mid = start + ((end - start) >> 1);
-	median3(start, mid, Prev_iter(end));
-	auto pfirst = Prev_iter(end);
-	std::iter_swap(pfirst, mid);
-	auto i = start, j = start;
-	while (*i < *pfirst){
-		i++; j++;
-	}
-	while (j != pfirst) {
-		if (*j < *pfirst) {
-			std::iter_swap(i, j);
-			i++; j++;
-		}
-		else if (*j == *pfirst) {
-			std::iter_swap(j, --pfirst);
-		}
-		else j++;
 
-	}
-	RanIt first=i, last=i;
-	for (auto itr = pfirst; itr < end; ++itr, ++i,++last) {
-		std::iter_swap(itr, i);
-	}
-	return std::pair<RanIt, RanIt>(first, last);
+template<typename RdIt>
+void quicksort(RdIt start, RdIt end) {
+	if (start >= end) return;
+
+	RdIt mid = partition(start, end);
+	if (mid >start) quicksort(start, mid);
+	if (end>mid)quicksort(mid+1 , end);
 }
 template<typename RdIt>
-void quicksort(RdIt start,RdIt end) {
+void quicksort3(RdIt start,RdIt end) {
 	if (start >= end) return;
-	RdIt mid = partition(start, end);
-	if (mid >start) quicksort(start, mid-1);
-	if (end>mid)quicksort(mid , end);
+	
+	auto [first, last] = partition3(start, end);
+	if(first>start)quicksort3(start, first);
+	if(end>last) quicksort3(last, end);
+	
 }
 
