@@ -1,12 +1,11 @@
 #include <iostream>
-#include "list.h"
 #include <list>
 #include <vector>
 #include <iterator>
 #include <algorithm>
 #include <random>
 #include <chrono>
-
+#define EXAMPLE6
 template<int nodebug = 0>
 class TestClass {
     int _x, _y;
@@ -50,78 +49,152 @@ public:
     }
 };
 
+#ifdef EXAMPLE1
+int main() {
+
+    std::list<int> mylist{ 1,2,3,4,5 };
+
+    mylist.push_back(6);
+    std::list<int>::iterator itr;
+    for (itr = mylist.begin(); itr != mylist.end(); ++itr)
+        std::cout << *itr << ",";
+    std::cout << std::endl;
+}
+#endif 
+
+#ifdef EXAMPLE2
+int main() {
+
+    std::list<int> mylist{ 1,2,3,4,5 };
+
+    mylist.push_front(6);
+    for (auto x:mylist)
+        std::cout << x<< ",";
+    std::cout << std::endl;
+}
+
+#endif
+
+#ifdef EXAMPLE3
+using namespace std::chrono;
+int main() {
+std::random_device e;
+std::uniform_int_distribution<> dist(1, 10);
+
+std::vector<int> myvec;
+
+auto startv = system_clock::now();
+for(int i=0;i<1000000;i++)
+   myvec.insert(myvec.begin(), dist(e));
+
+auto elapsed = duration_cast<seconds>(system_clock::now() - startv);
+std::cout << elapsed.count() << std::endl;
+
+std::list<int> mylist;
+auto startl = system_clock::now();
+for (int i = 0; i < 100000; i++)
+    mylist.push_front(dist(e));
+elapsed = duration_cast<seconds>(system_clock::now() - startl);
+std::cout << elapsed.count() << std::endl;
+
+}
+#endif 
+
+#ifdef EXAMPLE4
+using namespace std::chrono;
+int main() {
+    std::random_device e;
+    std::uniform_int_distribution<> dist(1, 10);
+
+    const int n = 1000000;
+    const int ops = 1000;
+    std::vector<int> myvec(n);
+    std::list<int> mylist(n);
+
+    std::generate(myvec.begin(), myvec.end(), [&]() { return dist(e); });
+    std::generate(mylist.begin(), mylist.end(), [&]() { return dist(e); });
+
+    auto startv = system_clock::now();
+    for (int i = 0; i < ops; i++)
+        std::advance(myvec.begin(), n/2);
+    auto elapsed = duration_cast<seconds>(system_clock::now() - startv);
+    std::cout << elapsed.count() << std::endl;
+    auto startl = system_clock::now();
+    for (int i = 0; i < ops; i++)
+        std::advance(mylist.begin(), n/2);
+    elapsed = duration_cast<seconds>(system_clock::now() - startl);
+    std::cout << elapsed.count() << std::endl;
+}
+#endif
+       
+#ifdef EXAMPLE5
+using namespace std::chrono;
 
 int main() {
-   /* {
-        std::list<int> mylist{ 1,2,3,4,5 };
-        auto itr = mylist.begin();
-        std::advance(itr, 2);
-        std::cout << *itr;
-        for (auto& x : mylist)
-            std::cout << x << ",";
-        std::cout << std::endl;
-        for (auto itr = mylist.begin(); itr != mylist.end(); ++itr)
-            std::cout << *itr << ",";
-        std::cout << std::endl;
-    }*/
-     /*{
-        std::list<TestClass<0>> a;
-        std::vector<TestClass<0>> b;
-        a.push_back(TestClass<0>(1, 2));
-        a.push_back(TestClass<0>(3, 4));
-        a.push_back(TestClass<0>(5, 6));
+    const int n = 1000000;
+    const int ops = 100;
+    std::random_device e;
+    std::uniform_int_distribution<> dist(1, 10);
+    std::vector<int> v;
+    std::list<int> l;
+    v.resize(n);
+    l.resize(n);
+    std::generate(v.begin(), v.end(), [&]() {return  dist(e); });
+    std::generate(l.begin(), l.end(), [&]() {return  dist(e); });
 
-        b.push_back(TestClass<0>(1, 2));
-        b.push_back(TestClass<0>(3, 4));
-        b.push_back(TestClass<0>(5, 6));
-        std::cout << "------------------------\n";
-        std::cout << " adding to the front of list\n";
-        a.push_front(TestClass<0>(7, 8));
-        std::cout << "------------------------\n";
-        std::cout << " adding to the front of vector\n";
-        b.insert(b.begin(), TestClass<0>(7, 8));
-        std::cout << "------------------\n";
-        std::cout << " done \n";
-        std::cout << "------------------\n";
-    }*/
+    auto startv = system_clock::now();
+    for (int i = 0; i < ops; i++) {
+        std::vector<int> ov;
+        std::copy_if(v.begin(), v.end(), std::back_inserter(ov),
+            [](int i) { return i % 2 == 0; });
+    }
 
-    /*{
-        using namespace std::chrono;
+    auto elapsed = duration_cast<seconds>(system_clock::now() - startv);
+    std::cout << elapsed.count() << std::endl;
+    std::list<int> ol;
 
-        std::vector<int> myvec(1000000);
-        std::random_device e;
-        std::uniform_int_distribution<> dist(1, 10);
-        std::generate(myvec.begin(), myvec.end(), [&]() { return dist(e); });
-        std::cout << "done generating\n";
-       
-        auto start = system_clock::now();
-        for (int i = 0; i < 100; i++)
-            std::advance(myvec.begin(), 999999);
-        auto elapsed = duration_cast<seconds>(system_clock::now() - start);
-        std::cout << elapsed.count() << std::endl;
-        myvec[10] = 17;
-    }*/
+    auto startl = system_clock::now();
+    for (int i = 0; i < ops; i++) {
+        std::copy_if(l.begin(), l.end(),std::back_inserter(ol),
+            [](int i) { return i % 2 == 0; });
+    }
+    elapsed = duration_cast<seconds>(system_clock::now() - startl);
+    std::cout << elapsed.count() << std::endl;
 
-   /* {
-        using namespace std::chrono;
-        std::list<int> mylist(1000000);
-        std::random_device e;
-        std::uniform_int_distribution<> dist(1, 10);
-        std::generate(mylist.begin(), mylist.end(), [&]() { return dist(e); });
-        std::cout << "done generating\n";
-        auto start = system_clock::now();
-        for (int i = 0; i < 100; i++)
-            std::advance(mylist.begin(), 999999);
-        auto elapsed = duration_cast<seconds>(system_clock::now() - start);
-        std::cout << elapsed.count()<<std::endl;
-    }*/
-
-   
-	/*{
-		list<int> l;
-		l.push_back(1); l.push_back(2);
-		l.push_front(3);
-		for (auto itr = l.begin(); itr != l.end(); ++itr)
-			std::cout << *itr << std::endl;
-	}*/
 }
+#endif 
+
+#ifdef EXAMPLE6
+using namespace std::chrono;
+
+int main() {
+    const int n = 1000000;
+    const int ops = 1000;
+    std::random_device e;
+    std::uniform_int_distribution<> dist(1, 10);
+    std::vector<int> srcv(n);
+    std::list<int> srcl(n);
+    std::generate(srcv.begin(), srcv.end(), [&]() {return  dist(e); });
+    std::generate(srcl.begin(), srcl.end(), [&]() {return  dist(e); });
+
+    std::vector<int> dstv(n);
+    auto startv = system_clock::now();
+    for (int i = 0; i < ops; i++) {
+        std::copy_if(srcv.begin(), srcv.end(), dstv.begin(),
+            [](int i) { return i % 2 == 0; });
+    }
+
+    auto elapsed = duration_cast<seconds>(system_clock::now() - startv);
+    std::cout << elapsed.count() << std::endl;
+    std::list<int> dstl(n);
+
+    auto startl = system_clock::now();
+    for (int i = 0; i < ops; i++) {
+        std::copy_if(srcl.begin(), srcl.end(), dstl.begin(),
+            [](int i) { return i % 2 == 0; });
+    }
+    elapsed = duration_cast<seconds>(system_clock::now() - startl);
+    std::cout << elapsed.count() << std::endl;
+
+}
+#endif 

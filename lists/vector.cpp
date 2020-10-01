@@ -6,7 +6,6 @@
 #include <numeric>
 #include <functional>
 //#include <execution>
-#include "vector.h"
 class check {
     int _x;
 public:
@@ -43,6 +42,7 @@ public:
       }
 
 #endif
+
 #ifdef EXAMPLE2
     /* exercise 2: illustration of dynamically */
     /* resizing the interal storage of a vector */
@@ -277,8 +277,9 @@ public:
                std::cout << "-------done----\n";
                }
 #endif 
+#ifdef EXAMPLE12
     /* exercise 15: deleting certain values from a vector */
-            /* {
+            {
              std::vector<TestClass<0>> v;
              v.reserve(4);
              TestClass<0> a(1, 2);
@@ -296,21 +297,23 @@ public:
              std::cout << "----done searching\n";
                }
 
+#endif
+#ifdef EXAMPLE13
     //exercise 16: using the more efficient remove/erase idiom
-             {
-                 std::vector<TestClass<0>> v;
-                 v.reserve(4);
-                 TestClass<0> a(1, 2);
-                 TestClass<0> b(3, 4);
-                 TestClass<0> c(5, 2);
-                 TestClass<0> d(5, 6);
-                 v.push_back(a); v.push_back(b); v.push_back(c); v.push_back(d);
-                 std::cout << "---searching--\n";
-                 auto itr=std::remove_if(v.begin(), v.end(), [](auto& t) { return t.y() == 2; });
-                 v.erase(itr, v.end());
-                 std::cout << "----done searching\n";
-             }*/
-
+             
+std::vector<TestClass<0>> v;
+v.reserve(4);
+TestClass<0> a(1, 2);
+TestClass<0> b(3, 4);
+TestClass<0> c(5, 2);
+TestClass<0> d(5, 6);
+v.push_back(a); v.push_back(b); v.push_back(c); v.push_back(d);
+std::cout << "---searching--\n";
+auto itr = std::remove_if(v.begin(), v.end(), [](auto& t) { return t.y() == 2; });
+v.erase(itr, v.end());
+std::cout << "----done searching\n";
+             
+#endif 
 
                 /* {
                  std::vector<TestClass<1>> u;
@@ -562,16 +565,19 @@ public:
         std::cout << "done\n";
 
     }*/
-    /*{
+#ifdef EXAMPLE20
+#include "vector.h"
+int main() {
+    
 
-        ::vector<TestClass<0>> v;
+        CSC313::vector<TestClass<0>> v;
         v.push_back(TestClass<0>(3, 4));
         v.emplace_back(1, 2);
         v.push_back(TestClass<0>(5, 6));
         v.emplace_back(7, 8);
         v.emplace_back(9, 10);
         v.emplace_back(11, 12);
-        v.emplace_back(13, 14);*/
+        v.emplace_back(13, 14);
         //::vector<TestClass<0>> u(5);
       /* std::vector<TestClass<0>> u,v;
 
@@ -593,9 +599,14 @@ public:
         u.push_back(TestClass<0>(5, 6));
         u.emplace_back(7, 8);
         std::cout << "\n-------------\n";*/
-        /*::vector<TestClass<0>>::iterator itr;
-        for (itr = v.begin(); itr != v.end(); ++itr)
-            std::cout << itr->x() <<","<<itr->y()<< std::endl;*/
-       /* for (auto&&  e : v) {
-            std::cout << e.x() << ","<<e.y()<<std::endl;
-        }*/
+
+
+    CSC313::vector<TestClass<0>>::iterator itr;
+    for (itr = v.begin(); itr != v.end(); ++itr)
+        std::cout << itr->x() << "," << itr->y() << std::endl;
+    for (auto&& e : v) {
+        std::cout << e.x() << "," << e.y() << std::endl;
+    }
+    CSC313::vector<int>::value_type t;
+}
+#endif 
